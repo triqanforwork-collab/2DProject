@@ -21,7 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://vue0fhorpn5g" path="res://scenes/npc/RedLancer.tscn" id="18_red"]
 [ext_resource type="PackedScene" uid="uid://ybgb23q3rkf" path="res://scenes/npc/YellowLancer.tscn" id="19_yellow"]
 [ext_resource type="PackedScene" path="res://scenes/ui/ConfirmationDialog.tscn" id="20_dialog"]
-[ext_resource type="AudioStream" uid="uid://fnteqekbug7" path="res://assets/audio/music/bgm_main_area.mp3" id="21_bgm"]
+[ext_resource type="AudioStream" uid="uid://c8nyp0d5kq1i8" path="res://assets/audio/music/seaside_coral_reef.ogg" id="21_bgm"]
 [ext_resource type="Texture2D" uid="uid://cs4ex0wan6so8" path="res://assets/environment/energy_stones/energy_stone_highlight.png" id="22_energy_stone"]
 [ext_resource type="Shader" uid="uid://uejljb234o60" path="res://resources/shaders/energy_stone_recolor.gdshader" id="23_energy_stone_shader"]
 [ext_resource type="PackedScene" path="res://scenes/ui/EnergyStonePanel.tscn" id="24_energy_panel"]
@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/StoneCelebrationController.tscn" id="28_celebration"]
 [ext_resource type="PackedScene" path="res://scenes/npc/StoneUpgradeInteraction.tscn" id="29_upgrade_interaction"]
 [ext_resource type="PackedScene" path="res://scenes/ui/StatUpgradePanel.tscn" id="30_upgrade_panel"]
+[ext_resource type="Script" path="res://scripts/quests/lancer_quest_controller.gd" id="31_quests"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jmgym"]
 texture = ExtResource("2_drsin")
@@ -408,16 +409,16 @@ tile_map_data = PackedByteArray("AABqAP3/CAACAAAAAAArAP7/CAACAAAAAABKAD8ACgAAAAE
 tile_set = SubResource("TileSet_jpyye")
 
 [node name="Player" parent="TileMap" unique_id=1859360934 instance=ExtResource("13_7mwk5")]
-position = Vector2(455, 500)
+position = Vector2(609, 589)
 
 [node name="NPCs" type="Node2D" parent="TileMap" unique_id=1240105885]
 y_sort_enabled = true
 
 [node name="Monk" parent="TileMap/NPCs" unique_id=21564800 instance=ExtResource("14_monk")]
-position = Vector2(611, 603)
+position = Vector2(652, 366)
 
 [node name="WaterStone" type="StaticBody2D" parent="TileMap/NPCs" unique_id=1334615679 groups=["energy_stone"]]
-position = Vector2(508, 394)
+position = Vector2(494, 425)
 metadata/region = "water"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TileMap/NPCs/WaterStone" unique_id=1648767634]
@@ -455,7 +456,7 @@ shape = SubResource("CircleShape2D_energy_stone")
 stone_id = "earth"
 
 [node name="LightStone" type="StaticBody2D" parent="TileMap/NPCs" unique_id=1626491219 groups=["energy_stone"]]
-position = Vector2(615, 423)
+position = Vector2(602, 472)
 metadata/region = "light"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TileMap/NPCs/LightStone" unique_id=261780965]
@@ -475,7 +476,7 @@ shape = SubResource("CircleShape2D_energy_stone")
 stone_id = "light"
 
 [node name="AirStone" type="StaticBody2D" parent="TileMap/NPCs" unique_id=781036137 groups=["energy_stone"]]
-position = Vector2(722, 403)
+position = Vector2(738, 425)
 metadata/region = "air"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TileMap/NPCs/AirStone" unique_id=1443931881]
@@ -515,19 +516,19 @@ shape = SubResource("CircleShape2D_energy_stone")
 stone_id = "life"
 
 [node name="BlackLancer" parent="TileMap/NPCs" unique_id=946809432 instance=ExtResource("15_black")]
-position = Vector2(235, 561)
+position = Vector2(-168, 1140)
 
 [node name="BlueLancer" parent="TileMap/NPCs" unique_id=1897968969 instance=ExtResource("16_blue")]
-position = Vector2(211, 412)
+position = Vector2(-46, 500)
 
 [node name="PurpleLancer" parent="TileMap/NPCs" unique_id=160832497 instance=ExtResource("17_purple")]
-position = Vector2(994, 552)
+position = Vector2(1594, 543)
 
 [node name="RedLancer" parent="TileMap/NPCs" unique_id=1688935382 instance=ExtResource("18_red")]
-position = Vector2(761, 522)
+position = Vector2(580, 1166)
 
 [node name="YellowLancer" parent="TileMap/NPCs" unique_id=59405436 instance=ExtResource("19_yellow")]
-position = Vector2(1015, 424)
+position = Vector2(1484, 1123)
 
 [node name="Sheep" parent="TileMap/NPCs" unique_id=1156253300 instance=ExtResource("25_sheep")]
 position = Vector2(577, 1046)
@@ -595,3 +596,63 @@ frame_progress = 0.22950599
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bigtree" unique_id=2117679224]
 position = Vector2(-1.5, 57)
 shape = SubResource("CircleShape2D_orua6")
+
+[node name="QuestSpots" type="Node2D" parent="TileMap"]
+y_sort_enabled = true
+script = ExtResource("31_quests")
+
+[node name="Spot1" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(-447, 636)
+metadata/hint = "ở mũi đất xa nhất phía tây"
+
+[node name="Spot2" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(-425, 896)
+metadata/hint = "trên dải đất ven biển phía tây"
+
+[node name="Spot3" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(-78, 1243)
+metadata/hint = "ngay phía nam Earth guardian"
+
+[node name="Spot4" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(-110, 1416)
+metadata/hint = "cạnh rặng thông phía tây nam"
+
+[node name="Spot5" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(139, 1568)
+metadata/hint = "ở góc tây của bờ biển phía nam"
+
+[node name="Spot6" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(508, 1590)
+metadata/hint = "ở bờ biển phía nam, bên trái con đường đất"
+
+[node name="Spot7" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(746, 1590)
+metadata/hint = "ở bờ biển phía nam, bên phải con đường đất"
+
+[node name="Spot8" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(226, 896)
+metadata/hint = "cạnh bụi cỏ dưới chân vách phía tây"
+
+[node name="Spot9" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(399, 983)
+metadata/hint = "gần chỗ người tiều phu đốn cây"
+
+[node name="Spot10" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(963, 896)
+metadata/hint = "sau rặng thông cạnh mỏ vàng"
+
+[node name="Spot11" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(1150, 640)
+metadata/hint = "dưới gốc cây vàng phía đông đồi thiêng"
+
+[node name="Spot12" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(1520, 960)
+metadata/hint = "trên dải đất giữa Air guardian và Light guardian"
+
+[node name="Spot13" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(356, 397)
+metadata/hint = "trên đồi thiêng, phía tây Monk"
+
+[node name="Spot14" type="Marker2D" parent="TileMap/QuestSpots"]
+position = Vector2(876, 397)
+metadata/hint = "trên đồi thiêng, phía đông Monk"

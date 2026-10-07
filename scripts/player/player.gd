@@ -20,11 +20,11 @@ const CONTINUE_BUTTON_TEXT := "Tiếp tục chiến đấu"
 const RETURN_BUTTON_TEXT := "Quay về đảo hồi sinh"
 const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 
-@export var speed: float = 220.0
+@export var speed: float = 200.0
 
 @export var max_health: int = 100
 @export var max_mana: int = 100
-@export var attack_damage: int = 20
+@export var attack_damage: int = 5
 @export var mana_regen_per_second: float = 4.0
 @export var mana_regen_delay: float = 2.0
 
@@ -32,12 +32,12 @@ const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 @export var heal_unlocked: bool = false
 @export var heal_amount: int = 30
 @export var heal_mana_cost: int = 25
-@export var heal_cooldown: float = 5.0
+@export var heal_cooldown: float = 3.0
 
 @export_category("Area Attack")
 @export var area_attack_unlocked: bool = false
 @export var area_attack_mana_cost: int = 35
-@export var area_attack_cooldown: float = 8.0
+@export var area_attack_cooldown: float = 5.0
 @export var area_attack_damage: int = 150
 @export var area_attack_projectile_speed: float = 420.0
 @export var area_attack_projectile_range: float = 520.0
@@ -46,7 +46,7 @@ const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 
 @export_category("Staff")
 @export var staff_unlocked: bool = false
-@export var staff_attack_damage: int = 7
+@export var staff_attack_damage: int = 20
 @export var staff_beam_range: float = 520.0
 @export var staff_beam_spawn_distance: float = 38.0
 @export var staff_beam_windup: float = 0.22
@@ -95,6 +95,8 @@ var is_casting: bool = false
 var is_dead: bool = false
 var controls_locked: bool = false
 var stun_time_left := 0.0
+var slow_multiplier := 1.0
+var slow_time_left := 0.0
 
 var is_dashing: bool = false
 var dash_time_left: float = 0.0
@@ -152,6 +154,9 @@ func _physics_process(delta: float) -> void:
 		return
 
 	stun_time_left = maxf(stun_time_left - delta, 0.0)
+	slow_time_left = maxf(slow_time_left - delta, 0.0)
+	if slow_time_left <= 0.0:
+		slow_multiplier = 1.0
 
 	if controls_locked or stun_time_left > 0.0:
 		velocity = Vector2.ZERO
@@ -204,7 +209,7 @@ func _physics_process(delta: float) -> void:
 		velocity = facing_direction * dash_speed
 
 	else:
-		velocity = direction * speed
+		velocity = direction * speed * slow_multiplier
 
 	move_and_slide()
 
@@ -228,6 +233,11 @@ func set_cinematic_locked(locked: bool) -> void:
 
 func apply_stun(duration: float) -> void:
 	stun_time_left = maxf(stun_time_left, duration)
+
+
+func apply_slow(multiplier: float, duration: float) -> void:
+	slow_multiplier = minf(slow_multiplier, clampf(multiplier, 0.2, 1.0))
+	slow_time_left = maxf(slow_time_left, duration)
 
 
 func get_hitbox_node(primary_name: String, fallback_name: String) -> Area2D:

@@ -39,7 +39,7 @@ Quy tắc canonical:
 ## 3. Gameplay Loop
 
 1. Main Menu đi qua Loading Screen tới Main Area.
-2. Player tương tác với Lancer của Region đã mở.
+2. Player tương tác với Lancer của Region đã mở, hoàn thành nhiệm vụ Lancer giao để được đi qua cổng.
 3. Trong Region, Player tiêu diệt 24 quái nhỏ và nhặt Energy.
 4. Khi quái cuối rời scene, Player bị khóa điều khiển tạm thời; cảnh báo hiện tên Boss và camera chuyển tới `BossSpawnPoint`.
 5. Hiệu ứng triệu hồi chạy xong mới spawn Boss. Camera quay lại rồi Boss mới hoạt động.
@@ -101,6 +101,25 @@ Mọi chuyển scene gameplay phải đi qua `SceneLoader` và `LoadingScreen.ts
 - `RegionVictoryController` đăng ký Boss spawn động, ghi nhận Boss vào progression, chờ nhặt boss Energy rồi mở victory dialog.
 - Cả 5 Boss có AI riêng với telegraph và recovery ngắn. Turtle dùng đạn nước, laser xoay và lao mai; Panda dùng sóng đất, lăn lao và mưa đá; Minotaur dùng húc, chém sáng và cột sáng; Giant Bat dùng bổ nhào, lưỡi gió và lốc; Troll có bão đạn phân nhánh, loạt Fireball dày, bão đá gây choáng, hút sinh lực và chuỗi húc. Minotaur, Giant Bat và Troll tăng nhịp hoặc số đợt khi còn dưới 50% HP.
 
+### Nhiệm Vụ Lancer
+
+- Mỗi Lancer chỉ cho đi qua cổng sau khi hoàn thành nhiệm vụ riêng; nhiệm vụ chỉ được giao khi Region đã mở.
+  - Water: tìm 1 thảo dược phát sáng. Earth: tìm 3 quặng cổ. Light: chạm 3 cột đá đúng thứ tự theo câu đố (sai thì làm lại). Air: bắt linh hồn gió 3 lần (nó bỏ chạy, cần Dash). Life: nhận lời chúc của 4 Lancer còn lại.
+- `QuestSpots` trong `main.tscn` chứa các `Marker2D` là điểm đặt vật phẩm; metadata `hint` mô tả vị trí, dùng để ghép câu đố Light. Điểm được chọn ngẫu nhiên khi nhận nhiệm vụ và lưu vào save.
+- `LancerQuestController` sinh `QuestItem` (thảo dược/quặng/cột đá có quầng sáng và hạt sáng) và `QuestWisp`; `gatekeeper.gd` xử lý giao/nhắc/trả nhiệm vụ và lời chúc Life.
+- Trạng thái lưu trong `ProgressionManager.lancer_quests`; save cũ chưa có dữ liệu này coi nhiệm vụ của các Region đã mở là xong. Lời thoại và mục tiêu nằm trong `StoryData.LANCER_QUESTS`.
+- HUD hiện một dòng theo dõi nhiệm vụ đang làm.
+
+### Dẫn Truyện
+
+- Toàn bộ lời thoại nằm trong `scripts/story/story_data.gd`; sửa chữ không cần đụng code.
+- `StoryDialog` (`scripts/ui/story_dialog.gd`) có chữ chạy từng ký tự, nút Bỏ qua/Tiếp, khóa điều khiển Player khi mở. Hai kiểu: `play_pages()` toàn màn hình (ảnh + khung chữ) và `play_monk()` hộp thoại dưới màn hình có chân dung Monk.
+- New Game phát Intro 5 trang trước khi vào Main Area. Ảnh minh họa đặt tại `assets/story/intro_1..5.png` và `ending_1..4.png`; thiếu ảnh thì dùng `icon.svg`.
+- Main Area: Monk chào lần đầu (chỉ khi chưa hạ Turtle); sau overlay kích hoạt đá, Monk giới thiệu phần thưởng và chỉ guardian tiếp theo. Life Stone phát Ending 4 trang rồi mới mở Final Summary.
+- Mỗi lần vào Region hiện banner "NHIỆM VỤ" khoảng 3 giây (dùng lại `BossWarningOverlay.play_quest`), không chặn gameplay.
+- Victory dialog dùng lời dẫn theo từng Region từ `StoryData.REGION_VICTORY`.
+- Đoạn đã xem lưu trong `ProgressionManager.seen_stories` và save file; New Game reset.
+
 ### Menu Và Settings
 
 - Entry scene là Loading Screen, mặc định tải Main Menu.
@@ -115,7 +134,6 @@ Mọi chuyển scene gameplay phải đi qua `SceneLoader` và `LoadingScreen.ts
 - Save/Load progression. Continue hiện chỉ chuyển tới Main Area, chưa đọc save.
 - Save tối thiểu phải lưu Energy đang mang, Energy từng đá, Boss/Region/reward đã mở, weapon mode, cấp nâng chỉ số và game_completed.
 - New Game hiện reset Energy nhưng chưa reset đầy đủ `ProgressionManager` và save data.
-- Ending/victory screen sau Life Stone; hiện mới có signal và cờ hoàn thành.
 - Âm thanh cảnh báo/spawn Boss và nhạc chiến đấu Region/Boss.
 - Kỹ năng riêng, telegraph, recovery, phase và arena hoàn chỉnh cho từng Boss.
 - Cân bằng sát thương, HP, Mana, cooldown và lượng Energy.
@@ -124,7 +142,7 @@ Mọi chuyển scene gameplay phải đi qua `SceneLoader` và `LoadingScreen.ts
 Chưa tự quyết định nếu chưa có yêu cầu rõ:
 
 - Enemy respawn và khả năng farm Energy.
-- Nội dung ending và khả năng chơi tiếp sau chiến thắng.
+- Khả năng chơi tiếp sau chiến thắng.
 - Thông số cân bằng cuối cùng của vũ khí và Boss.
 
 ## 6. Kiến Trúc Quan Trọng

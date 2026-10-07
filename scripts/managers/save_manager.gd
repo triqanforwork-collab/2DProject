@@ -99,9 +99,9 @@ func complete_run() -> Dictionary:
 	var summary := get_summary()
 	if completion_recorded:
 		return summary
-	completion_recorded = true
-	run_active = false
-	tracking_time = false
+	if not run_active:
+		push_warning("Ignored completion without an active saved run.")
+		return summary
 	var entries := get_leaderboard()
 	entries.append({
 		"completed_at": Time.get_datetime_string_from_system(false, true),
@@ -113,9 +113,13 @@ func complete_run() -> Dictionary:
 	})
 	entries.sort_custom(_is_better_run)
 	entries = entries.slice(0, mini(entries.size(), MAX_LEADERBOARD_ENTRIES))
-	_write_json(LEADERBOARD_PATH, {"version": SAVE_VERSION, "entries": entries})
-	run_active = true
-	save_game()
+	if not _write_json(LEADERBOARD_PATH, {"version": SAVE_VERSION, "entries": entries}):
+		push_error("Could not save the completed run to the leaderboard.")
+		return summary
+	completion_recorded = true
+	tracking_time = false
+	if not save_game():
+		push_error("Leaderboard was saved, but the completed save game could not be updated.")
 	run_active = false
 	return summary
 
@@ -137,9 +141,20 @@ func get_leaderboard() -> Array:
 		return []
 	var entries: Array = []
 	for entry in saved_entries:
-		if entry is Dictionary:
+		if entry is Dictionary and _is_valid_leaderboard_entry(entry):
 			entries.append(entry)
 	return entries.slice(0, mini(entries.size(), MAX_LEADERBOARD_ENTRIES))
+
+
+func _is_valid_leaderboard_entry(entry: Dictionary) -> bool:
+	if str(entry.get("completed_at", "")).is_empty():
+		return false
+	return (
+		int(entry.get("elapsed_seconds", 0)) > 0
+		or int(entry.get("total_energy", 0)) > 0
+		or int(entry.get("enemies_defeated", 0)) > 0
+		or int(entry.get("upgrades", 0)) > 0
+	)
 
 
 func _get_stats_data() -> Dictionary:

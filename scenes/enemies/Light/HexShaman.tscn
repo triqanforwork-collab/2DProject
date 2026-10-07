@@ -1,12 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dsnl71u0tmqxg"]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy.gd" id="1_avgm2"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Hex Shaman/Hex Shaman_Attack.png" id="2_hc37m"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Hex Shaman/Hex Shaman_Idle.png" id="3_qflyx"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Hex Shaman/Hex Shaman_Run.png" id="4_xvpwa"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Fire_03.png" id="5_nifsn"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Dust_02.png" id="6_hgk0o"]
-[ext_resource type="Texture2D" path="res://assets/effect/MagicBarrier_64x64.png" id="7_uv0gm"]
+[ext_resource type="Script" uid="uid://ds5m36np86tuu" path="res://scripts/enemies/hex_shaman.gd" id="1_avgm2"]
+[ext_resource type="Texture2D" uid="uid://c6y146gt7v3cj" path="res://assets/enemies/Hex Shaman/Hex Shaman_Attack.png" id="2_hc37m"]
+[ext_resource type="Texture2D" uid="uid://bncd652xlxa7g" path="res://assets/enemies/Hex Shaman/Hex Shaman_Idle.png" id="3_qflyx"]
+[ext_resource type="Texture2D" uid="uid://dn68i34wqy8qo" path="res://assets/enemies/Hex Shaman/Hex Shaman_Run.png" id="4_xvpwa"]
+[ext_resource type="Texture2D" uid="uid://nrjed3uwjpsf" path="res://assets/enemies/Fire_03.png" id="5_nifsn"]
+[ext_resource type="Texture2D" uid="uid://bglydjb6frmih" path="res://assets/enemies/Dust_02.png" id="6_hgk0o"]
+[ext_resource type="Texture2D" uid="uid://bpt1t8w0uo4pc" path="res://assets/effect/MagicBarrier_64x64.png" id="7_uv0gm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ge5yw"]
 atlas = ExtResource("2_hc37m")
@@ -537,10 +537,10 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_to53i"]
-radius = 19.0
+radius = 10.049875
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u4jo4"]
-radius = 180.0
+radius = 380.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ly07w"]
 radius = 55.0
@@ -549,7 +549,15 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_avgm2")
-attack_range = 55.0
+preferred_range = 225.0
+retreat_range = 115.0
+projectile_speed = 285.0
+projectile_tint = Color(1, 0.85, 0.25, 1)
+health = 28
+speed = 115.0
+attack_damage = 2
+attack_range = 300.0
+attack_cooldown = 2.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1301076255]
 scale = Vector2(0.5, 0.5)
@@ -562,7 +570,6 @@ z_index = 30
 sprite_frames = SubResource("SpriteFrames_0ehoa")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1392095765]
-visible = false
 position = Vector2(2, 16)
 shape = SubResource("CircleShape2D_to53i")
 
@@ -572,7 +579,6 @@ collision_layer = 64
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyHurtbox" unique_id=2098900341]
-visible = false
 shape = SubResource("CircleShape2D_to53i")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=1678069425]
@@ -581,7 +587,6 @@ collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=1999452844]
-visible = false
 position = Vector2(1, 1.5)
 shape = SubResource("CircleShape2D_u4jo4")
 
@@ -591,5 +596,4 @@ collision_layer = 16
 collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyAttackHitbox" unique_id=11503779]
-visible = false
 shape = SubResource("CircleShape2D_ly07w")

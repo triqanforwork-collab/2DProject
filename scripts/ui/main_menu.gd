@@ -95,6 +95,7 @@ func _on_confirm_no_pressed() -> void:
 
 func new_game() -> void:
 	SaveManager.start_new_game()
+	await StoryDialog.play_pages(self, StoryData.INTRO)
 	SceneLoader.change_scene(MAIN_SCENE_PATH)
 
 

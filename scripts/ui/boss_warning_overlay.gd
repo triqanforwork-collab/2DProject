@@ -38,6 +38,17 @@ func play_celebration(stone_name: String, reward_text: String, hold_duration: fl
 	await _play(hold_duration)
 
 
+func play_quest(region_title: String, quest_text: String, hold_duration: float = 3.0) -> void:
+	warning_label.text = "NHIỆM VỤ"
+	boss_label.text = region_title
+	subtitle_label.text = quest_text
+	warning_label.add_theme_color_override("font_color", Color(1, 0.84, 0.25))
+	backdrop.color = Color(0.02, 0.04, 0.08, 0.4)
+	top_line.color = Color(0.86, 0.7, 0.38, 0.9)
+	bottom_line.color = top_line.color
+	await _play(hold_duration)
+
+
 func _play(hold_duration: float) -> void:
 	if pulse_tween != null and pulse_tween.is_valid():
 		pulse_tween.kill()

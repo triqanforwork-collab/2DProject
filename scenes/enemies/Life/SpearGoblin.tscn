@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy.gd" id="1_gnq48"]
+[ext_resource type="Script" path="res://scripts/enemies/spear_goblin.gd" id="1_gnq48"]
+[ext_resource type="Texture2D" path="res://assets/enemies/Harpoon.png" id="7_harpoon"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spear Goblin/Spear Goblin_Attack Fast.png" id="2_qf022"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spear Goblin/Spear Goblin_Idle.png" id="3_gam2i"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spear Goblin/Spear Goblin_Run.png" id="4_cxv53"]
@@ -533,7 +534,7 @@ animations = [{
 radius = 19.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jd3me"]
-radius = 180.0
+radius = 420.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t72ds"]
 radius = 55.0
@@ -542,7 +543,18 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_gnq48")
-attack_range = 55.0
+health = 38
+speed = 130.0
+attack_damage = 2
+attack_range = 340.0
+attack_cooldown = 1.7
+preferred_range = 250.0
+retreat_range = 125.0
+projectile_speed = 360.0
+projectile_texture = ExtResource("7_harpoon")
+projectile_texture_rotation = 0.785398
+shot_count = 1
+spread_degrees = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1529020573]
 scale = Vector2(0.5, 0.5)

@@ -23,7 +23,6 @@ const BOSS_SPAWN_EFFECT_SCENE: PackedScene = preload("res://scenes/effects/BossS
 @export_range(0.1, 2.0, 0.05) var camera_return_duration := 0.5
 
 @onready var warning_overlay: BossWarningOverlay = $BossWarningOverlay
-@onready var combat_music: AudioStreamPlayer = $CombatMusic
 
 var encounter_state := EncounterState.CLEARING
 var enemies_container: Node
@@ -35,17 +34,7 @@ var spawned_boss: Node
 
 
 func _ready() -> void:
-	_enable_music_loop(combat_music)
 	call_deferred("_initialize_encounter")
-
-
-func _enable_music_loop(player_node: AudioStreamPlayer) -> void:
-	if player_node.stream is AudioStreamWAV:
-		(player_node.stream as AudioStreamWAV).loop_mode = AudioStreamWAV.LOOP_FORWARD
-	if not player_node.finished.is_connected(player_node.play):
-		player_node.finished.connect(player_node.play)
-	if not player_node.playing:
-		player_node.play()
 
 
 func _initialize_encounter() -> void:

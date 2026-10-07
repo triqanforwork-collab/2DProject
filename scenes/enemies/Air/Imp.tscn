@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b2l1alidqhi7w"]
 
-[ext_resource type="Script" uid="uid://bxt6nff8bc0jl" path="res://scripts/enemies/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://scripts/enemies/imp.gd" id="1_enemy"]
+[ext_resource type="Texture2D" path="res://assets/enemies/Gnoll_Bone.png" id="10_bone"]
 [ext_resource type="Texture2D" uid="uid://djpckkjq2hpmq" path="res://assets/enemies/Imp/Imp_Idle.png" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://dh0bdkjrcaoky" path="res://assets/enemies/Imp/Imp_Move.png" id="3_move"]
 [ext_resource type="Texture2D" uid="uid://xtsvpdhw0c5x" path="res://assets/enemies/Imp/Imp_Attack_Start.png" id="4_attack_start"]
@@ -570,7 +571,7 @@ animations = [{
 radius = 19.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_detection"]
-radius = 180.0
+radius = 400.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy_hitbox"]
 radius = 55.0
@@ -579,7 +580,16 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_enemy")
-attack_range = 55.0
+health = 32
+speed = 125.0
+attack_damage = 2
+attack_range = 320.0
+attack_cooldown = 1.8
+preferred_range = 235.0
+retreat_range = 120.0
+projectile_speed = 300.0
+projectile_texture = ExtResource("10_bone")
+projectile_hframes = 4
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1182161643]
 scale = Vector2(0.5, 0.5)

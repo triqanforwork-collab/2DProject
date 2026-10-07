@@ -3,6 +3,7 @@ extends "res://scripts/bosses/special_boss.gd"
 const WIND_BLADE := preload("res://assets/effects/bosses/IcePick_64x64.png")
 const DIVE_IMPACT := preload("res://assets/effects/bosses/IceShatter_2_96x96.png")
 const TORNADO := preload("res://assets/effects/bosses/TornadoMoving_96x96.png")
+const TORNADO_SOUND_TIME := 4.7
 
 
 func attack_player() -> void:
@@ -50,7 +51,13 @@ func wind_blades() -> void:
 
 func tornadoes() -> void:
 	play_attack_animation()
-	AudioManager.play_sfx(&"tornado", 0.9, -2.0)
+	var sound := AudioManager.play_sfx(&"tornado", 0.9, -2.0)
+	if sound != null:
+		# tornado.wav is ~39s; fade it out when the tornadoes (0.8s delay + 4.5s) end.
+		var fade := sound.create_tween()
+		fade.tween_interval(TORNADO_SOUND_TIME)
+		fade.tween_property(sound, "volume_db", -40.0, 0.6)
+		fade.tween_callback(sound.queue_free)
 	var count := 4 if health <= max_health / 2 else 3
 	for index in count:
 		var angle := TAU * index / count

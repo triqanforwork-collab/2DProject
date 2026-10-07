@@ -3,16 +3,18 @@ extends "res://scripts/enemies/enemy.gd"
 signal defeated(boss: Node)
 
 @export var boss_name: String = "Boss"
-@export var max_health: int = 40
+@export var max_health: int = 500
 @export var boss_energy_drop := 30
 @export_range(1, 10, 1) var energy_per_pickup := 5
+@export var vanish_flash_count := 3
+@export var vanish_fade_time := 0.6
+@export var death_effect_scale := 2.0
 
 @onready var boss_health_bar: Control = get_node_or_null("BossHealthUI/BossHealthBar")
 @onready var health_background: ColorRect = get_node_or_null("BossHealthUI/BossHealthBar/Background")
 @onready var health_fill: ColorRect = get_node_or_null("BossHealthUI/BossHealthBar/Fill")
 @onready var boss_name_label: Label = get_node_or_null("BossHealthUI/BossHealthBar/BossName")
 
-var navigation_agent: NavigationAgent2D
 var navigation_repath_time := 0.0
 var navigation_stuck_time := 0.0
 var last_navigation_position := Vector2.ZERO
@@ -45,12 +47,13 @@ func _physics_process(delta: float) -> void:
 
 
 func _setup_navigation_agent() -> void:
-	navigation_agent = NavigationAgent2D.new()
-	navigation_agent.name = "NavigationAgent2D"
+	if navigation_agent == null:
+		navigation_agent = NavigationAgent2D.new()
+		navigation_agent.name = "NavigationAgent2D"
+		add_child(navigation_agent)
 	navigation_agent.path_desired_distance = 10.0
 	navigation_agent.target_desired_distance = 18.0
 	navigation_agent.avoidance_enabled = false
-	add_child(navigation_agent)
 	last_navigation_position = global_position
 
 
@@ -114,8 +117,42 @@ func die() -> void:
 	if boss_health_bar != null:
 		boss_health_bar.visible = false
 
+	var body_animation := &""
+	var body_frame := 0
+	if animated_sprite != null:
+		body_animation = animated_sprite.animation
+		body_frame = animated_sprite.frame
+
 	super()
 	defeated.emit(self)
+	_vanish(body_animation, body_frame)
+
+
+func finish_death() -> void:
+	pass # _vanish() frees the boss once the death effect ends.
+
+
+# Body flashes and fades first, then the death effect (fire + dust) plays enlarged.
+func _vanish(body_animation: StringName, body_frame: int) -> void:
+	var has_death_effect := animated_sprite != null and animated_sprite.animation == death_animation
+	if has_death_effect:
+		animated_sprite.play(body_animation)
+		animated_sprite.pause()
+		animated_sprite.frame = body_frame
+
+	var tween := create_tween()
+	for i in vanish_flash_count:
+		tween.tween_property(self, "modulate", Color(2.5, 2.5, 2.5, 1.0), 0.15)
+		tween.tween_property(self, "modulate", Color.WHITE, 0.15)
+	tween.tween_property(self, "modulate:a", 0.0, vanish_fade_time)
+	await tween.finished
+
+	if has_death_effect:
+		modulate = Color.WHITE
+		animated_sprite.scale *= death_effect_scale
+		animated_sprite.play(death_animation)
+		await animated_sprite.animation_finished
+	queue_free()
 
 
 func get_energy_drop_amount() -> int:

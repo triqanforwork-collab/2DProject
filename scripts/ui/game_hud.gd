@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var energy_value: Label = $ScreenAnchor/HUDPanel/InnerMargin/Content/HealthSection/EnergyRow/EnergyMargin/EnergyContent/EnergyValue
 
 var player: Node
+var quest_label: Label
 
 
 func _ready() -> void:
@@ -22,6 +23,7 @@ func _ready() -> void:
 	if not EnergyManager.energy_changed.is_connected(_on_energy_changed):
 		EnergyManager.energy_changed.connect(_on_energy_changed)
 	_on_energy_changed(EnergyManager.carried_energy)
+	_create_quest_label()
 	_sync_from_player.call_deferred()
 
 
@@ -50,3 +52,33 @@ func _on_mana_changed(current_mana: int, maximum_mana: int) -> void:
 
 func _on_energy_changed(current_energy: int) -> void:
 	energy_value.text = str(maxi(current_energy, 0))
+
+
+# One-line tracker for the active Lancer quest, under the HUD panel.
+func _create_quest_label() -> void:
+	quest_label = Label.new()
+	quest_label.position = Vector2(26, 126)
+	quest_label.add_theme_font_size_override("font_size", 16)
+	quest_label.add_theme_color_override("font_color", Color(1, 0.92, 0.6))
+	quest_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	quest_label.add_theme_constant_override("outline_size", 4)
+	quest_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(quest_label)
+	ProgressionManager.lancer_quest_changed.connect(_update_quest_label.unbind(1))
+	_update_quest_label()
+
+
+func _update_quest_label() -> void:
+	quest_label.text = ""
+	for region_id in ProgressionManager.STONE_ORDER:
+		var quest := ProgressionManager.get_lancer_quest(region_id)
+		if str(quest.get("state", "")) != "active":
+			continue
+		var data: Dictionary = StoryData.LANCER_QUESTS[region_id]
+		var progress := int(quest.get("progress", 0))
+		var goal := int(data["goal"])
+		if progress >= goal:
+			quest_label.text = "Nhiệm vụ: " + StoryData.QUEST_RETURN_HUD % data["guardian"]
+		else:
+			quest_label.text = "Nhiệm vụ: " + str(data["hud"]) % [progress, goal]
+		return

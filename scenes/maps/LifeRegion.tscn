@@ -289,13 +289,13 @@ scale = Vector2(2, 2)
 position = Vector2(564, 730)
 
 [node name="SpearGoblin3" parent="TileMap/Enemies" unique_id=1903183495 instance=ExtResource("15_spear")]
-position = Vector2(644, 709)
+position = Vector2(632, 893)
 
 [node name="SpearGoblin4" parent="TileMap/Enemies" unique_id=84281478 instance=ExtResource("15_spear")]
 position = Vector2(418, 741)
 
 [node name="SpearGoblin5" parent="TileMap/Enemies" unique_id=287905397 instance=ExtResource("15_spear")]
-position = Vector2(605, 635)
+position = Vector2(577, 814)
 
 [node name="SpearGoblin6" parent="TileMap/Enemies" unique_id=958690956 instance=ExtResource("15_spear")]
 position = Vector2(490, 674)
@@ -333,7 +333,7 @@ boss_spawn_point_path = NodePath("../TileMap/BossSpawnPoint")
 boss_scene = ExtResource("19_troll")
 boss_display_name = "TROLL"
 
-[node name="RegionNavigation" parent="." instance=ExtResource("21_navigation")]
+[node name="RegionNavigation" parent="." unique_id=1942412081 instance=ExtResource("21_navigation")]
 
 [node name="RegionVictoryController" parent="." unique_id=1959989270 instance=ExtResource("18_victory")]
 replay_scene_path = "res://scenes/maps/LifeRegion.tscn"

@@ -1,4 +1,4 @@
-extends "res://scripts/enemies/enemy.gd"
+extends "res://scripts/enemies/ranged_enemy.gd"
 
 const BOMB_SCENE := preload("res://scenes/enemies/Water/BombProjectile.tscn")
 

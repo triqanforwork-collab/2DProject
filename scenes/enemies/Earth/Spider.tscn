@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy.gd" id="1_8ycei"]
+[ext_resource type="Script" path="res://scripts/enemies/spider.gd" id="1_8ycei"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spider/Spider_Attack.png" id="2_77ehm"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spider/Spider_Idle.png" id="3_gooah"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Spider/Spider_Run.png" id="4_wx0a7"]
@@ -542,6 +542,8 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_8ycei")
+health = 24
+speed = 115.0
 attack_range = 55.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1778463971]

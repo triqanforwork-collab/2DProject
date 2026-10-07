@@ -22,7 +22,17 @@ func _connect_encounter() -> void:
 		var callback := Callable(self, "_on_boss_spawned")
 		if not encounter.is_connected("boss_spawned", callback):
 			encounter.connect("boss_spawned", callback)
+		_show_quest_banner(encounter)
 	_connect_bosses()
+
+
+func _show_quest_banner(encounter: Node) -> void:
+	var quest: Dictionary = StoryData.REGION_QUESTS.get(StringName(region_id), {})
+	var overlay := encounter.get_node_or_null("BossWarningOverlay") as BossWarningOverlay
+	if quest.is_empty() or overlay == null:
+		return
+	await get_tree().create_timer(0.6).timeout
+	overlay.play_quest(str(quest["title"]), str(quest["quest"]))
 
 
 func _connect_bosses() -> void:
@@ -42,14 +52,18 @@ func _on_boss_spawned(boss: Node) -> void:
 	_connect_boss(boss)
 
 
-func _on_boss_defeated(_boss: Node) -> void:
+func _on_boss_defeated(boss: Node) -> void:
 	if victory_handled:
 		return
 
 	victory_handled = true
 	ProgressionManager.mark_boss_defeated(StringName(region_id))
-	victory_sound.play()
+	if is_instance_valid(boss) and boss.is_inside_tree():
+		await boss.tree_exited
+	if not is_inside_tree():
+		return
 	await _wait_for_boss_energy()
+	victory_sound.play()
 	_open_victory_dialog()
 
 
@@ -68,7 +82,7 @@ func _open_victory_dialog() -> void:
 	if not dialog.option_selected.is_connected(_on_victory_option_selected):
 		dialog.option_selected.connect(_on_victory_option_selected, CONNECT_ONE_SHOT)
 	var opened: bool = dialog.open_dialog(
-		victory_message,
+		StoryData.REGION_VICTORY.get(StringName(region_id), victory_message),
 		"Chơi lại màn này",
 		"Quay về đảo hồi sinh",
 		false,

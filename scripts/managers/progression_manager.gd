@@ -8,6 +8,7 @@ signal region_unlocked(region_id: StringName)
 signal reward_unlocked(reward_id: StringName)
 signal stat_upgrade_changed(stone_id: StringName, level: int)
 signal game_completed
+signal lancer_quest_changed(region_id: StringName)
 
 const STONE_ORDER: Array[StringName] = [
 	&"water",
@@ -76,6 +77,9 @@ var unlocked_regions: Dictionary = {}
 var unlocked_rewards: Dictionary = {}
 var stat_upgrade_levels: Dictionary = {}
 var has_completed_game := false
+var seen_stories: Dictionary = {}
+# region id (String) -> {"state": "active"/"done", "progress": int, "spots": [int], "visited": [String]}
+var lancer_quests: Dictionary = {}
 
 
 func _ready() -> void:
@@ -89,6 +93,8 @@ func reset_progression() -> void:
 	unlocked_regions.clear()
 	unlocked_rewards.clear()
 	stat_upgrade_levels.clear()
+	seen_stories.clear()
+	lancer_quests.clear()
 	has_completed_game = false
 
 	for stone_id in STONE_ORDER:
@@ -244,6 +250,8 @@ func get_save_data() -> Dictionary:
 		"activated_stones": _string_key_dictionary(activated_stones),
 		"stat_upgrade_levels": _string_key_dictionary(stat_upgrade_levels),
 		"has_completed_game": has_completed_game,
+		"seen_stories": seen_stories.keys().map(func(id): return str(id)),
+		"lancer_quests": lancer_quests.duplicate(true),
 	}
 
 
@@ -275,7 +283,47 @@ func load_save_data(data: Dictionary) -> void:
 		if next_region != &"":
 			unlocked_regions[next_region] = true
 	has_completed_game = bool(data.get("has_completed_game", false)) and bool(activated_stones[&"life"])
+	var saved_stories = data.get("seen_stories", [])
+	if saved_stories is Array:
+		for story_id in saved_stories:
+			seen_stories[StringName(str(story_id))] = true
+	var saved_quests = data.get("lancer_quests", null)
+	if saved_quests is Dictionary:
+		for stone_id in STONE_ORDER:
+			var quest = saved_quests.get(str(stone_id), null)
+			if quest is Dictionary:
+				lancer_quests[str(stone_id)] = quest
+	else:
+		# Saves from before Lancer quests: regions already open stay open.
+		for stone_id in STONE_ORDER:
+			if is_region_unlocked(stone_id):
+				lancer_quests[str(stone_id)] = {"state": "done"}
 	progression_reset.emit()
+
+
+
+func get_lancer_quest(region_id: StringName) -> Dictionary:
+	return lancer_quests.get(str(region_id), {})
+
+
+func get_lancer_quest_state(region_id: StringName) -> String:
+	return str(get_lancer_quest(region_id).get("state", ""))
+
+
+func update_lancer_quest(region_id: StringName, changes: Dictionary) -> void:
+	var quest := get_lancer_quest(region_id).duplicate(true)
+	quest.merge(changes, true)
+	lancer_quests[str(region_id)] = quest
+	lancer_quest_changed.emit(region_id)
+	SaveManager.save_game()
+
+
+# Returns true the first time a story id is seen, then remembers it in the save.
+func mark_story_seen(story_id: StringName) -> bool:
+	if seen_stories.has(story_id):
+		return false
+	seen_stories[story_id] = true
+	return true
 
 
 func get_completed_upgrade_count() -> int:

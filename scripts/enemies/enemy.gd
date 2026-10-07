@@ -3,8 +3,8 @@ extends CharacterBody2D
 const ENERGY_PICKUP_SCENE := preload("res://scenes/pickups/EnergyPickup.tscn")
 
 @export var health: int = 15
-@export_range(1, 5, 1) var min_energy_drop := 10
-@export_range(1, 5, 1) var max_energy_drop := 50
+@export_range(1, 5, 1) var min_energy_drop := 5
+@export_range(1, 5, 1) var max_energy_drop := 10
 @export var speed: float = 100.0
 
 @export var attack_damage: int = 1
@@ -48,6 +48,9 @@ var energy_has_dropped := false
 var enemy_max_health: int
 var enemy_health_bar: Control
 var enemy_health_fill: ColorRect
+var navigation_agent: NavigationAgent2D
+var navigation_repath_left := 0.0
+var shield_hits := 0
 
 
 func _ready() -> void:
@@ -57,6 +60,10 @@ func _ready() -> void:
 
 	player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	play_animation(idle_animation)
+	navigation_agent = NavigationAgent2D.new()
+	navigation_agent.path_desired_distance = 8.0
+	navigation_agent.target_desired_distance = 18.0
+	add_child(navigation_agent)
 
 	if hurtbox != null:
 		hurtbox.add_to_group("enemy_hurtbox")
@@ -133,6 +140,15 @@ func get_area_node(primary_name: String, fallback_name: String) -> Area2D:
 
 
 func chase_player(direction: Vector2) -> void:
+	if navigation_agent != null and NavigationServer2D.map_get_iteration_id(navigation_agent.get_navigation_map()) > 0:
+		navigation_repath_left -= get_physics_process_delta_time()
+		if navigation_repath_left <= 0.0:
+			navigation_agent.target_position = player.global_position
+			navigation_repath_left = 0.25
+		var next_position := navigation_agent.get_next_path_position()
+		if next_position != Vector2.ZERO:
+			direction = global_position.direction_to(next_position)
+	direction = (direction + get_separation_direction() * 0.45).normalized()
 	velocity = direction * speed
 	play_animation(move_animation)
 	move_and_slide()
@@ -161,6 +177,11 @@ func attack_player() -> void:
 func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void:
 	if is_dead:
 		return
+	if shield_hits > 0:
+		shield_hits -= 1
+		animated_sprite.modulate = Color.WHITE if shield_hits == 0 else Color(0.55, 0.95, 1.0)
+		AudioManager.play_sfx(&"denied", 1.2, -5.0)
+		return
 
 	health -= damage
 	AudioManager.play_sfx(&"enemy_hurt", randf_range(0.9, 1.1), -4.0)
@@ -175,6 +196,23 @@ func take_damage(damage: int, attacker_position: Vector2 = Vector2.ZERO) -> void
 		return
 
 	apply_knockback(attacker_position)
+
+
+func grant_shield() -> void:
+	shield_hits = 1
+	if animated_sprite != null:
+		animated_sprite.modulate = Color(0.55, 0.95, 1.0)
+
+
+func get_separation_direction() -> Vector2:
+	var separation := Vector2.ZERO
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		if enemy == self or not enemy is Node2D:
+			continue
+		var offset := global_position - (enemy as Node2D).global_position
+		if offset.length_squared() > 0.01 and offset.length() < 42.0:
+			separation += offset.normalized()
+	return separation.normalized()
 
 
 func play_hit_feedback() -> void:
@@ -237,18 +275,22 @@ func die() -> void:
 	print("Enemy died")
 
 	if animated_sprite == null:
-		queue_free()
+		finish_death()
 		return
 
 	if animated_sprite.sprite_frames == null:
-		queue_free()
+		finish_death()
 		return
 
 	if not animated_sprite.sprite_frames.has_animation(death_animation):
-		queue_free()
+		finish_death()
 		return
 
 	animated_sprite.play(death_animation)
+
+
+func finish_death() -> void:
+	queue_free()
 
 
 func create_enemy_health_bar() -> void:
@@ -546,7 +588,7 @@ func _on_attack_hitbox_body_exited(body: Node2D) -> void:
 
 func _on_animated_sprite_animation_finished() -> void:
 	if is_dead:
-		queue_free()
+		finish_death()
 		return
 
 	is_playing_attack_animation = false

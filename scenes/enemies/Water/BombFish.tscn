@@ -1,12 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://co688pcpekn3c"]
 
-[ext_resource type="Script" path="res://scripts/enemies/bomb_fish.gd" id="1_eh2q0"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Bomb Fish/Bomb Fish_Shoot.png" id="2_pbmvr"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Bomb Fish/Bomb Fish_Idle.png" id="3_sam1d"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Bomb Fish/Bomb Fish_Run.png" id="4_cnq3t"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Fire_03.png" id="5_1lrpn"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Dust_02.png" id="6_4m747"]
-[ext_resource type="Texture2D" path="res://assets/effect/MagicBarrier_64x64.png" id="7_26r4t"]
+[ext_resource type="Script" uid="uid://dtxhhfsvxlpoj" path="res://scripts/enemies/bomb_fish.gd" id="1_eh2q0"]
+[ext_resource type="Texture2D" uid="uid://cs60rj7f23vm1" path="res://assets/enemies/Bomb Fish/Bomb Fish_Shoot.png" id="2_pbmvr"]
+[ext_resource type="Texture2D" uid="uid://d0lf14koc84rv" path="res://assets/enemies/Bomb Fish/Bomb Fish_Idle.png" id="3_sam1d"]
+[ext_resource type="Texture2D" uid="uid://cx2yr3nfndpwo" path="res://assets/enemies/Bomb Fish/Bomb Fish_Run.png" id="4_cnq3t"]
+[ext_resource type="Texture2D" uid="uid://nrjed3uwjpsf" path="res://assets/enemies/Fire_03.png" id="5_1lrpn"]
+[ext_resource type="Texture2D" uid="uid://bglydjb6frmih" path="res://assets/enemies/Dust_02.png" id="6_4m747"]
+[ext_resource type="Texture2D" uid="uid://bpt1t8w0uo4pc" path="res://assets/effect/MagicBarrier_64x64.png" id="7_26r4t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8bgdj"]
 atlas = ExtResource("2_pbmvr")
@@ -533,7 +533,7 @@ animations = [{
 radius = 19.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wjm12"]
-radius = 180.0
+radius = 360.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v0o38"]
 radius = 150.0
@@ -542,7 +542,10 @@ radius = 150.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_eh2q0")
-attack_range = 150.0
+preferred_range = 230.0
+retreat_range = 120.0
+health = 18
+attack_range = 310.0
 attack_cooldown = 4.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=968590830]

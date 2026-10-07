@@ -9,7 +9,7 @@ script = ExtResource("1_controller")
 
 [node name="CombatMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_music")
-volume_db = -4.0
+volume_db = -2.0
 autoplay = true
 bus = &"Music"
 

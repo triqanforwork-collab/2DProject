@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/enemies/enemy.gd" id="1_la3cl"]
+[ext_resource type="Script" path="res://scripts/enemies/torch_goblin.gd" id="1_la3cl"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Torch Goblin/Torch Goblin_Attack.png" id="2_7yuyw"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Torch Goblin/Torch Goblin_Idle.png" id="3_peweh"]
 [ext_resource type="Texture2D" path="res://assets/enemies/Torch Goblin/Torch Goblin_Run.png" id="4_01ji5"]
@@ -549,6 +549,9 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_la3cl")
+health = 30
+speed = 120.0
+attack_damage = 2
 attack_range = 55.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1030393229]
