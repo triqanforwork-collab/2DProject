@@ -7,7 +7,7 @@ const ENERGY_PICKUP_SCENE := preload("res://scenes/pickups/EnergyPickup.tscn")
 @export_range(1, 5, 1) var max_energy_drop := 10
 @export var speed: float = 100.0
 
-@export var attack_damage: int = 1
+@export var attack_damage: int = 5
 @export var attack_range: float = 100.0
 @export var attack_cooldown: float = 1.0
 

@@ -7,6 +7,8 @@ const STAFF_ICON: Texture2D = preload("res://assets/ui/Icons/Icon_02.png")
 @export_range(0.0, 0.9, 0.01) var joystick_deadzone: float = 0.12
 @export var dynamic_joystick: bool = true
 @export var edge_margin: float = 20.0
+## Size multiplier for the joystick and action buttons; each group grows from its screen corner.
+@export_range(0.5, 2.0, 0.05) var controls_scale: float = 1.3
 
 @onready var joystick_zone: Control = $VirtualJoystickZone
 @onready var joystick_base: Control = $VirtualJoystickZone/Base
@@ -49,6 +51,7 @@ func _ready() -> void:
 	area_attack_button.disabled = true
 	interact_button.visible = false
 	get_viewport().size_changed.connect(_apply_safe_area)
+	_apply_controls_scale()
 	_find_player()
 	_apply_safe_area.call_deferred()
 	_reset_joystick_visual.call_deferred()
@@ -303,6 +306,13 @@ func _apply_safe_area() -> void:
 	$ActionButtons.offset_left = $ActionButtons.offset_right - 284.0
 	$ActionButtons.offset_bottom = -(edge_margin + bottom_inset)
 	$ActionButtons.offset_top = $ActionButtons.offset_bottom - 228.0
+
+
+func _apply_controls_scale() -> void:
+	joystick_zone.pivot_offset = Vector2(0.0, 220.0)
+	joystick_zone.scale = Vector2.ONE * controls_scale
+	$ActionButtons.pivot_offset = Vector2(284.0, 228.0)
+	$ActionButtons.scale = Vector2.ONE * controls_scale
 
 
 func _exit_tree() -> void:

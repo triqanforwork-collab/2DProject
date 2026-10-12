@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dhn6w58gcwlxs"]
 
-[ext_resource type="Script" path="res://scripts/bosses/minotaur.gd" id="1_4onte"]
+[ext_resource type="Script" uid="uid://fmmmme7hc22f" path="res://scripts/bosses/minotaur.gd" id="1_4onte"]
 [ext_resource type="Texture2D" uid="uid://crulfest5x2hg" path="res://assets/bosses/Light/Minotaur/Minotaur_Attack.png" id="2_a4sb5"]
 [ext_resource type="Texture2D" uid="uid://dg1r44obajdnj" path="res://assets/bosses/Light/Minotaur/Minotaur_Idle.png" id="3_okqmt"]
 [ext_resource type="Texture2D" uid="uid://cmotcnwfh1cqb" path="res://assets/bosses/Light/Minotaur/Minotaur_Walk.png" id="4_6ag8v"]
@@ -638,7 +638,7 @@ animations = [{
 radius = 29.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ognk6"]
-radius = 320.0
+radius = 731.00616
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i88i5"]
 radius = 80.0
@@ -647,7 +647,12 @@ radius = 80.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_4onte")
+charge_damage = 10
+charge_blast_damage = 10
+light_slash_damage = 10
+light_pillar_damage = 10
 boss_name = "MINOTAUR"
+max_health = 500
 speed = 105.0
 attack_damage = 3
 attack_range = 230.0
@@ -682,12 +687,10 @@ position = Vector2(2, 12)
 shape = SubResource("CircleShape2D_ysohr")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=326899881]
-visible = false
 collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=1276297228]
-visible = false
 shape = SubResource("CircleShape2D_ognk6")
 
 [node name="EnemyAttackHitbox" type="Area2D" parent="." unique_id=1278952785]

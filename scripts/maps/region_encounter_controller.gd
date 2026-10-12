@@ -94,6 +94,9 @@ func _check_for_region_clear() -> void:
 
 
 func _begin_boss_warning() -> void:
+	# Leaving the region also removes every minion; that is not a region clear.
+	if not is_inside_tree():
+		return
 	if encounter_state != EncounterState.CLEARING or not tracked_minions.is_empty():
 		return
 

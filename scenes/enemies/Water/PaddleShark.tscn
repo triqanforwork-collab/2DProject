@@ -1,12 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://u4kletseacdc"]
 
-[ext_resource type="Script" path="res://scripts/enemies/dash_enemy.gd" id="1_f3s7s"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Paddle Shark/Paddle Shark_Attack.png" id="2_s36eu"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Paddle Shark/Paddle Shark_Idle.png" id="3_l1qli"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Paddle Shark/Paddle Shark_Run.png" id="4_iwgof"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Fire_03.png" id="5_xhkjn"]
-[ext_resource type="Texture2D" path="res://assets/enemies/Dust_02.png" id="6_l41mo"]
-[ext_resource type="Texture2D" path="res://assets/effect/MagicBarrier_64x64.png" id="7_1lt1o"]
+[ext_resource type="Script" uid="uid://bxl2idogotjgg" path="res://scripts/enemies/dash_enemy.gd" id="1_f3s7s"]
+[ext_resource type="Texture2D" uid="uid://de1wcceica53" path="res://assets/enemies/Paddle Shark/Paddle Shark_Attack.png" id="2_s36eu"]
+[ext_resource type="Texture2D" uid="uid://c6amu8wmojbpf" path="res://assets/enemies/Paddle Shark/Paddle Shark_Idle.png" id="3_l1qli"]
+[ext_resource type="Texture2D" uid="uid://bnj7qgb8krlbb" path="res://assets/enemies/Paddle Shark/Paddle Shark_Run.png" id="4_iwgof"]
+[ext_resource type="Texture2D" uid="uid://nrjed3uwjpsf" path="res://assets/enemies/Fire_03.png" id="5_xhkjn"]
+[ext_resource type="Texture2D" uid="uid://bglydjb6frmih" path="res://assets/enemies/Dust_02.png" id="6_l41mo"]
+[ext_resource type="Texture2D" uid="uid://bpt1t8w0uo4pc" path="res://assets/effect/MagicBarrier_64x64.png" id="7_1lt1o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xy2sf"]
 atlas = ExtResource("2_s36eu")
@@ -535,7 +535,8 @@ radius = 55.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_f3s7s")
-health = 18
+health = 12
+attack_damage = 2
 attack_range = 55.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=565572553]

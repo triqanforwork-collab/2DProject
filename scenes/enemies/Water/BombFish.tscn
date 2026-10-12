@@ -544,7 +544,7 @@ collision_mask = 7
 script = ExtResource("1_eh2q0")
 preferred_range = 230.0
 retreat_range = 120.0
-health = 18
+health = 10
 attack_range = 310.0
 attack_cooldown = 4.0
 

@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="CayNguyenSinh"
+config/name="Centella"
 run/main_scene="res://scenes/ui/LoadingScreen.tscn"
 config/features=PackedStringArray("4.7", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://assets/app_icon/icon_512.png"
 
 [autoload]
 
@@ -109,3 +109,4 @@ return_to_main={
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

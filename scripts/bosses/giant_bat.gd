@@ -5,6 +5,10 @@ const DIVE_IMPACT := preload("res://assets/effects/bosses/IceShatter_2_96x96.png
 const TORNADO := preload("res://assets/effects/bosses/TornadoMoving_96x96.png")
 const TORNADO_SOUND_TIME := 4.7
 
+@export var dive_damage := 5
+@export var wind_blade_damage := 3
+@export var tornado_damage := 3
+
 
 func attack_player() -> void:
 	if special_active or not can_special_attack(): return
@@ -24,7 +28,7 @@ func dive_attack() -> void:
 	AudioManager.play_sfx(&"wind", 0.9, 0.0)
 	var landing := player.global_position
 	animated_sprite.visible = false
-	spawn_hazard(landing, 62.0, 1.0, 5, Color(0.55, 0.85, 1.0))
+	spawn_hazard(landing, 62.0, 1.0, dive_damage, Color(0.55, 0.85, 1.0))
 	await get_tree().create_timer(0.95).timeout
 	global_position = landing
 	AudioManager.play_sfx(&"earth_slam", 1.1, 0.0)
@@ -44,7 +48,7 @@ func wind_blades() -> void:
 		var blades := 6 if health <= max_health / 2 else 5
 		for index in blades:
 			var spread := deg_to_rad((index - (blades - 1) * 0.5) * 13.0 + wave * 3.0)
-			var blade := spawn_projectile(aim.rotated(spread), 285.0, 3, Color(0.55, 0.85, 1.0), 12.0, 2.3)
+			var blade := spawn_projectile(aim.rotated(spread), 285.0, wind_blade_damage, Color(0.55, 0.85, 1.0), 12.0, 2.3)
 			blade.set_visual(WIND_BLADE, Vector2i(64, 64), 30, 22.0, Vector2(1.15, 1.15), Color(0.6, 0.9, 1.0))
 		await get_tree().create_timer(0.32).timeout
 
@@ -63,7 +67,7 @@ func tornadoes() -> void:
 		var angle := TAU * index / count
 		var position := player.global_position + Vector2.from_angle(angle) * 110.0
 		var drift := Vector2.from_angle(angle + PI * 0.5) * 28.0
-		var tornado := spawn_hazard(position, 48.0, 0.8, 3, Color(0.45, 0.8, 1.0), 4.5, drift)
+		var tornado := spawn_hazard(position, 48.0, 0.8, tornado_damage, Color(0.45, 0.8, 1.0), 4.5, drift)
 		tornado.set_circle_opacity(0.025, 0.1, 0.025, 0.08)
 		tornado.set_effect(TORNADO, Vector2i(96, 96), 89, 18.0, true, Vector2(1.65, 1.65), Color(0.65, 0.9, 1.0))
 	await get_tree().create_timer(1.0).timeout

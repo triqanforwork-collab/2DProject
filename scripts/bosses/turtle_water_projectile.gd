@@ -4,7 +4,7 @@ extends Area2D
 @export var lifetime := 2.2
 
 var direction := Vector2.RIGHT
-var damage := 1
+var damage := 10
 
 
 func _ready() -> void:

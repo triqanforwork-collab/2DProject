@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://mc6hoals3i0n"]
 
-[ext_resource type="Script" path="res://scripts/bosses/panda.gd" id="1_eot77"]
+[ext_resource type="Script" uid="uid://bvrtocpqx8l22" path="res://scripts/bosses/panda.gd" id="1_eot77"]
 [ext_resource type="Texture2D" uid="uid://deytpilrml65x" path="res://assets/bosses/Earth/Panda/Panda_Attack.png" id="2_egb8f"]
 [ext_resource type="Texture2D" uid="uid://brx7q5iutktu5" path="res://assets/bosses/Earth/Panda/Panda_Idle.png" id="3_v03s5"]
 [ext_resource type="Texture2D" uid="uid://dg4augkimlarj" path="res://assets/bosses/Earth/Panda/Panda_Run.png" id="4_ut0na"]
@@ -589,7 +589,7 @@ animations = [{
 radius = 29.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_113m0"]
-radius = 320.0
+radius = 689.2902
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ymh01"]
 radius = 80.0
@@ -598,8 +598,11 @@ radius = 80.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_eot77")
+earth_wave_damage = 5
+rolling_charge_damage = 5
+rock_rain_damage = 5
 boss_name = "PANDA"
-max_health = 45
+max_health = 500
 speed = 75.0
 attack_damage = 2
 attack_range = 220.0
@@ -634,12 +637,10 @@ position = Vector2(2, 12)
 shape = SubResource("CircleShape2D_i7g6k")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=1153161038]
-visible = false
 collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=1341764505]
-visible = false
 shape = SubResource("CircleShape2D_113m0")
 
 [node name="EnemyAttackHitbox" type="Area2D" parent="." unique_id=22442757]

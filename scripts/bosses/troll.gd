@@ -5,6 +5,12 @@ const LIFE_DRAIN := preload("res://assets/effects/bosses/PoisonCast_96x96.png")
 const ICE_SHATTER := preload("res://assets/effects/bosses/IceShatter_96x96.png")
 const FIREBALL := preload("res://assets/effects/bosses/FireBall_2_64x64.png")
 
+@export var fireball_damage := 4
+@export var energy_orb_damage := 4
+@export var rock_storm_damage := 4
+@export var life_drain_damage := 2
+@export var chained_charge_damage := 6
+
 
 func attack_player() -> void:
 	if special_active or not can_special_attack(): return
@@ -30,7 +36,7 @@ func fireball_volley() -> void:
 		AudioManager.play_sfx(&"fireball", 0.92 + wave * 0.02, -2.0)
 		var aim := global_position.direction_to(player.global_position)
 		for angle in [-36.0, -24.0, -12.0, 0.0, 12.0, 24.0, 36.0]:
-			var fireball := spawn_projectile(aim.rotated(deg_to_rad(angle + wave * 2.0)), 245.0, 4, Color(1.0, 0.35, 0.08), 14.0, 2.5)
+			var fireball := spawn_projectile(aim.rotated(deg_to_rad(angle + wave * 2.0)), 245.0, fireball_damage, Color(1.0, 0.35, 0.08), 14.0, 2.5)
 			fireball.set_visual(FIREBALL, Vector2i(64, 64), 45, 24.0, Vector2(1.35, 1.35))
 		await get_tree().create_timer(0.2).timeout
 
@@ -43,7 +49,7 @@ func energy_storm() -> void:
 	for wave in waves:
 		if not can_special_attack(): return
 		for index in 8:
-			var orb := spawn_projectile(Vector2.from_angle(TAU * index / 8.0 + wave * 0.15), 165.0, 4, Color(0.6, 0.15, 1.0), 14.0, 0.7, 2)
+			var orb := spawn_projectile(Vector2.from_angle(TAU * index / 8.0 + wave * 0.15), 165.0, energy_orb_damage, Color(0.6, 0.15, 1.0), 14.0, 0.7, 2)
 			orb.set_visual(ENERGY_ORB, Vector2i(64, 64), 33, 20.0, Vector2(1.35, 1.35), Color(0.85, 0.55, 1.0))
 		await get_tree().create_timer(0.36).timeout
 
@@ -54,7 +60,7 @@ func rock_storm() -> void:
 	var count := 8 if health <= max_health / 2 else 6
 	for index in count:
 		var offset := Vector2.from_angle(TAU * index / count) * randf_range(45.0, 150.0)
-		var rock := spawn_hazard(player.global_position + offset, 70.0, randf_range(0.7, 1.05), 4, Color(0.65, 0.8, 1.0), 1.2, Vector2.ZERO, 0.5)
+		var rock := spawn_hazard(player.global_position + offset, 70.0, randf_range(0.7, 1.05), rock_storm_damage, Color(0.65, 0.8, 1.0), 1.2, Vector2.ZERO, 0.5)
 		rock.set_repeat_damage(false)
 		rock.set_effect(ICE_SHATTER, Vector2i(96, 96), 49, 24.0, false, Vector2(1.55, 1.55))
 	await get_tree().create_timer(1.8).timeout
@@ -69,7 +75,7 @@ func life_drain() -> void:
 	for _tick in 5:
 		if not can_special_attack(): return
 		if global_position.distance_to(player.global_position) <= (145.0 if health <= max_health / 2 else 120.0):
-			player.take_damage(2, global_position)
+			player.take_damage(life_drain_damage, global_position)
 			health = mini(max_health, health + 2)
 			update_health_bar()
 		await get_tree().create_timer(0.45).timeout
@@ -88,7 +94,7 @@ func chained_charge() -> void:
 			velocity = direction * 410.0
 			move_and_slide()
 			if not hit and global_position.distance_to(player.global_position) < 64.0:
-				player.take_damage(6, global_position)
+				player.take_damage(chained_charge_damage, global_position)
 				hit = true
 			if get_slide_collision_count() > 0: break
 			await get_tree().physics_frame

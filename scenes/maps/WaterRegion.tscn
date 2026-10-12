@@ -242,26 +242,14 @@ position = Vector2(865, 124)
 [node name="BombFish" parent="TileMap/Enemies" unique_id=34095186 instance=ExtResource("14_bombfish")]
 position = Vector2(240, 290)
 
-[node name="BombFish2" parent="TileMap/Enemies" unique_id=1808736618 instance=ExtResource("14_bombfish")]
-position = Vector2(356, 676)
-
 [node name="BombFish3" parent="TileMap/Enemies" unique_id=7795038 instance=ExtResource("14_bombfish")]
 position = Vector2(1752, 546)
-
-[node name="BombFish4" parent="TileMap/Enemies" unique_id=1912704877 instance=ExtResource("14_bombfish")]
-position = Vector2(608, 492)
 
 [node name="BombFish5" parent="TileMap/Enemies" unique_id=774361925 instance=ExtResource("14_bombfish")]
 position = Vector2(354, 799)
 
-[node name="BombFish6" parent="TileMap/Enemies" unique_id=501300895 instance=ExtResource("14_bombfish")]
-position = Vector2(1204, 1018)
-
 [node name="BombFish7" parent="TileMap/Enemies" unique_id=1942304667 instance=ExtResource("14_bombfish")]
 position = Vector2(1342, 1001)
-
-[node name="BombFish8" parent="TileMap/Enemies" unique_id=1936003707 instance=ExtResource("14_bombfish")]
-position = Vector2(1484, 898)
 
 [node name="BombFish9" parent="TileMap/Enemies" unique_id=731587417 instance=ExtResource("14_bombfish")]
 position = Vector2(747, 718)
@@ -271,9 +259,6 @@ position = Vector2(468, 620)
 
 [node name="BombFish11" parent="TileMap/Enemies" unique_id=1609947696 instance=ExtResource("14_bombfish")]
 position = Vector2(1410, 919)
-
-[node name="BombFish12" parent="TileMap/Enemies" unique_id=1721511557 instance=ExtResource("14_bombfish")]
-position = Vector2(493, 720)
 
 [node name="BombFish13" parent="TileMap/Enemies" unique_id=323268534 instance=ExtResource("14_bombfish")]
 position = Vector2(1740, 677)

@@ -10,6 +10,8 @@ signal stat_upgrade_changed(stone_id: StringName, level: int)
 signal game_completed
 signal lancer_quest_changed(region_id: StringName)
 
+const DEBUG_UNLOCK_ALL := true
+
 const STONE_ORDER: Array[StringName] = [
 	&"water",
 	&"earth",
@@ -104,6 +106,12 @@ func reset_progression() -> void:
 		stat_upgrade_levels[stone_id] = 0
 
 	unlocked_regions[&"water"] = true
+	if DEBUG_UNLOCK_ALL:
+		for stone_id in STONE_ORDER:
+			unlocked_regions[stone_id] = true
+			lancer_quests[str(stone_id)] = {"state": "done"}
+		for reward_id in [&"heal", &"staff", &"area_attack", &"stat_upgrades"]:
+			unlocked_rewards[reward_id] = true	
 	progression_reset.emit()
 	region_unlocked.emit(&"water")
 

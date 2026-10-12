@@ -5,6 +5,11 @@ const LIGHT_CAST := preload("res://assets/effects/bosses/LightCast_96.png")
 const LIGHT_SLASH := preload("res://assets/effects/bosses/IcePick_64x64.png")
 const LIGHT_CORE := preload("res://assets/effects/bosses/MediumStar_64x64.png")
 
+@export var charge_damage := 20
+@export var charge_blast_damage := 30
+@export var light_slash_damage := 30
+@export var light_pillar_damage := 20
+
 
 func attack_player() -> void:
 	if special_active or not can_special_attack(): return
@@ -32,12 +37,12 @@ func charge() -> void:
 		velocity = direction * 390.0
 		move_and_slide()
 		if not hit and global_position.distance_to(player.global_position) < 48.0:
-			player.take_damage(5, global_position)
+			player.take_damage(charge_damage, global_position)
 			hit = true
 		if get_slide_collision_count() > 0: break
 		await get_tree().physics_frame
 	stop_moving()
-	spawn_hazard(global_position, 82.0, 0.15, 3, Color(0.15, 0.8, 1.0))
+	spawn_hazard(global_position, 82.0, 0.15, charge_blast_damage, Color(0.15, 0.8, 1.0))
 	AudioManager.play_sfx(&"light_burst", 0.9, 1.0)
 	spawn_sheet_effect(global_position, HOLY_EXPLOSION, Vector2i(96, 96), 28, 22.0, false, Vector2(1.75, 1.75), Color(0.45, 0.9, 1.0))
 
@@ -49,7 +54,7 @@ func light_slash(delay := 0.7) -> void:
 	if not can_special_attack(): return
 	var aim := global_position.direction_to(player.global_position)
 	for angle in [-22.0, 0.0, 22.0]:
-		var slash := spawn_projectile(aim.rotated(deg_to_rad(angle)), 300.0, 4, Color(0.2, 0.9, 1.0), 18.0, 2.2)
+		var slash := spawn_projectile(aim.rotated(deg_to_rad(angle)), 300.0, light_slash_damage, Color(0.2, 0.9, 1.0), 18.0, 2.2)
 		slash.set_visual(LIGHT_SLASH, Vector2i(64, 64), 30, 22.0, Vector2(1.65, 1.65), Color(0.55, 0.9, 1.0))
 
 
@@ -60,7 +65,7 @@ func light_pillars() -> void:
 	for _index in count:
 		if not can_special_attack(): return
 		var pillar_position := player.global_position
-		spawn_hazard(pillar_position, 68.0, 0.8, 4, Color(0.25, 0.9, 1.0))
+		spawn_hazard(pillar_position, 68.0, 0.8, light_pillar_damage, Color(0.25, 0.9, 1.0))
 		spawn_sheet_effect(pillar_position, LIGHT_CAST, Vector2i(96, 96), 48, 24.0, false, Vector2(1.55, 1.55), Color(0.45, 0.9, 1.0))
 		await get_tree().create_timer(0.75).timeout
 		AudioManager.play_sfx(&"light_burst", 1.0 + _index * 0.03, -1.0)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bfprmkfec5soe"]
 
-[ext_resource type="Script" path="res://scripts/bosses/giant_bat.gd" id="1_d0g44"]
+[ext_resource type="Script" uid="uid://dhwrs1je5cddx" path="res://scripts/bosses/giant_bat.gd" id="1_d0g44"]
 [ext_resource type="Texture2D" uid="uid://b03kol7240taf" path="res://assets/bosses/Air/Giant Bat/Giant Bat_Attack.png" id="2_u3ac7"]
 [ext_resource type="Texture2D" uid="uid://bxwoh5u38kxw5" path="res://assets/bosses/Air/Giant Bat/Giant Bat_Idle.png" id="3_ogw3u"]
 [ext_resource type="Texture2D" uid="uid://cimpptbnmnjuf" path="res://assets/bosses/Air/Giant Bat/Giant Bat_Move.png" id="4_fymmm"]
@@ -505,7 +505,7 @@ animations = [{
 radius = 29.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_x0cka"]
-radius = 320.0
+radius = 635.4368
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_miewu"]
 radius = 80.0
@@ -514,8 +514,11 @@ radius = 80.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_d0g44")
+dive_damage = 10
+wind_blade_damage = 10
+tornado_damage = 10
 boss_name = "GIANT BAT"
-max_health = 30
+max_health = 800
 speed = 120.0
 attack_damage = 2
 attack_range = 250.0
@@ -550,12 +553,10 @@ position = Vector2(2, 12)
 shape = SubResource("CircleShape2D_ny1pu")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=1097460246]
-visible = false
 collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=1258189541]
-visible = false
 shape = SubResource("CircleShape2D_x0cka")
 
 [node name="EnemyAttackHitbox" type="Area2D" parent="." unique_id=1259850127]

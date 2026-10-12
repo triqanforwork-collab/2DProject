@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://qdmqkj8jaml4"]
 
-[ext_resource type="Script" path="res://scripts/bosses/turtle.gd" id="1_cngck"]
+[ext_resource type="Script" uid="uid://dneroem427f7s" path="res://scripts/bosses/turtle.gd" id="1_cngck"]
 [ext_resource type="Texture2D" uid="uid://b183un0b0csrs" path="res://assets/bosses/Water/Turtle/Turtle_Attack.png" id="2_08x1o"]
 [ext_resource type="Texture2D" uid="uid://di3jfm53gwmig" path="res://assets/bosses/Water/Turtle/Turtle_Idle.png" id="3_s1obt"]
 [ext_resource type="Texture2D" uid="uid://orcud5a0ases" path="res://assets/bosses/Water/Turtle/Turtle_Walk.png" id="4_ckxwf"]
@@ -575,7 +575,7 @@ animations = [{
 radius = 29.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2mj4s"]
-radius = 320.0
+radius = 757.1486
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g8hwc"]
 radius = 230.0
@@ -584,8 +584,11 @@ radius = 230.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_cngck")
+projectile_damage = 10
+laser_damage = 10
+dash_damage = 10
 boss_name = "TURTLE"
-max_health = 55
+max_health = 200
 speed = 60.0
 attack_damage = 2
 attack_range = 230.0
@@ -620,12 +623,10 @@ position = Vector2(2, 12)
 shape = SubResource("CircleShape2D_o08hu")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=373429677]
-visible = false
 collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=1518123851]
-visible = false
 shape = SubResource("CircleShape2D_2mj4s")
 
 [node name="EnemyAttackHitbox" type="Area2D" parent="." unique_id=916998798]

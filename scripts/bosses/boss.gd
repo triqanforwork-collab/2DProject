@@ -3,7 +3,7 @@ extends "res://scripts/enemies/enemy.gd"
 signal defeated(boss: Node)
 
 @export var boss_name: String = "Boss"
-@export var max_health: int = 500
+@export var max_health: int = 1000
 @export var boss_energy_drop := 30
 @export_range(1, 10, 1) var energy_per_pickup := 5
 @export var vanish_flash_count := 3

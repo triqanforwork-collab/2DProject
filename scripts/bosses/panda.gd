@@ -2,6 +2,10 @@ extends "res://scripts/bosses/special_boss.gd"
 
 const ROCK_IMPACT := preload("res://assets/effects/bosses/IceShatter_96x96.png")
 
+@export var earth_wave_damage := 3
+@export var rolling_charge_damage := 4
+@export var rock_rain_damage := 3
+
 
 func attack_player() -> void:
 	if special_active or not can_special_attack(): return
@@ -23,7 +27,7 @@ func earth_wave() -> void:
 	if not can_special_attack(): return
 	var aim := global_position.direction_to(player.global_position)
 	for angle in [-24.0, 0.0, 24.0]:
-		spawn_projectile(aim.rotated(deg_to_rad(angle)), 230.0, 3, Color(1.0, 0.58, 0.08), 14.0, 2.0)
+		spawn_projectile(aim.rotated(deg_to_rad(angle)), 230.0, earth_wave_damage, Color(1.0, 0.58, 0.08), 14.0, 2.0)
 
 
 func rolling_charge() -> void:
@@ -37,7 +41,7 @@ func rolling_charge() -> void:
 		velocity = direction * 330.0
 		move_and_slide()
 		if not hit and global_position.distance_to(player.global_position) < 42.0:
-			player.take_damage(4, global_position)
+			player.take_damage(rolling_charge_damage, global_position)
 			hit = true
 		if get_slide_collision_count() > 0: break
 		await get_tree().physics_frame
@@ -52,7 +56,7 @@ func rock_rain() -> void:
 	var radius := 70.0 if health <= max_health / 2 else 62.0
 	for index in count:
 		var offset := Vector2.from_angle(TAU * index / count) * randf_range(35.0, 115.0)
-		var hazard := spawn_hazard(player.global_position + offset, radius, 1.0, 3, Color(0.75, 0.85, 1.0), 1.4)
+		var hazard := spawn_hazard(player.global_position + offset, radius, 1.0, rock_rain_damage, Color(0.75, 0.85, 1.0), 1.4)
 		hazard.set_repeat_damage(false)
 		hazard.set_effect(ROCK_IMPACT, Vector2i(96, 96), 49, 24.0, false, Vector2.ONE * radius / 48.0)
 	await get_tree().create_timer(2.5).timeout

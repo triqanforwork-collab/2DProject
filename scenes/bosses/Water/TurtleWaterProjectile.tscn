@@ -1,14 +1,14 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://pkj17xj8s4nw"]
 
-[ext_resource type="Script" path="res://scripts/bosses/turtle_water_projectile.gd" id="1_script"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
-radius = 8.0
+[ext_resource type="Script" uid="uid://dcmd7aqrqsolv" path="res://scripts/bosses/turtle_water_projectile.gd" id="1_script"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_neon"]
 blend_mode = 1
 
-[node name="TurtleWaterProjectile" type="Area2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
+radius = 8.0
+
+[node name="TurtleWaterProjectile" type="Area2D" unique_id=1701342665]
 z_index = 20
 material = SubResource("CanvasItemMaterial_neon")
 collision_layer = 0
@@ -16,5 +16,5 @@ collision_mask = 3
 monitorable = false
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=262761406]
 shape = SubResource("CircleShape2D_projectile")

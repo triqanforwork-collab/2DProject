@@ -3,9 +3,9 @@ extends "res://scripts/bosses/boss.gd"
 const WATER_PROJECTILE := preload("res://scenes/bosses/Water/TurtleWaterProjectile.tscn")
 const LASER_ATTACK := preload("res://scripts/bosses/turtle_laser_attack.gd")
 
-@export var projectile_damage := 2
-@export var laser_damage := 3
-@export var dash_damage := 4
+@export var projectile_damage := 20
+@export var laser_damage := 50
+@export var dash_damage := 50
 
 var special_active := false
 var last_attack := &""

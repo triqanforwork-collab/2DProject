@@ -22,15 +22,15 @@ const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 
 @export var speed: float = 200.0
 
-@export var max_health: int = 100
+@export var max_health: int = 200
 @export var max_mana: int = 100
-@export var attack_damage: int = 5
+@export var attack_damage: int = 10
 @export var mana_regen_per_second: float = 4.0
 @export var mana_regen_delay: float = 2.0
 
 @export_category("Abilities")
 @export var heal_unlocked: bool = false
-@export var heal_amount: int = 30
+@export var heal_amount: int = 50
 @export var heal_mana_cost: int = 25
 @export var heal_cooldown: float = 3.0
 
@@ -38,7 +38,7 @@ const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 @export var area_attack_unlocked: bool = false
 @export var area_attack_mana_cost: int = 35
 @export var area_attack_cooldown: float = 5.0
-@export var area_attack_damage: int = 150
+@export var area_attack_damage: int = 100
 @export var area_attack_projectile_speed: float = 420.0
 @export var area_attack_projectile_range: float = 520.0
 @export var area_attack_spawn_distance: float = 38.0
@@ -46,7 +46,8 @@ const MAIN_MENU_BUTTON_TEXT := "Về Main Menu"
 
 @export_category("Staff")
 @export var staff_unlocked: bool = false
-@export var staff_attack_damage: int = 20
+@export var staff_attack_damage: int = 30
+@export var staff_mana_cost: int = 5
 @export var staff_beam_range: float = 520.0
 @export var staff_beam_spawn_distance: float = 38.0
 @export var staff_beam_windup: float = 0.22
@@ -335,9 +336,16 @@ func attack() -> void:
 	if is_attacking or is_casting:
 		return
 
+	var uses_staff := weapon_mode == WeaponMode.STAFF
+	if uses_staff and mana < staff_mana_cost:
+		AudioManager.play_sfx(&"denied")
+		return
+
 	if not play_attack_animation():
 		return
 
+	if uses_staff:
+		use_mana(staff_mana_cost)
 	is_attacking = true
 	AudioManager.play_sfx(&"magic_cast" if weapon_mode == WeaponMode.STAFF else &"sword_swing")
 	staff_attack_sequence += 1

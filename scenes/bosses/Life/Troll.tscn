@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cveratgnbpc3f"]
 
-[ext_resource type="Script" path="res://scripts/bosses/troll.gd" id="1_4jnuk"]
+[ext_resource type="Script" uid="uid://dwauun0mkatp0" path="res://scripts/bosses/troll.gd" id="1_4jnuk"]
 [ext_resource type="Texture2D" uid="uid://bwsq77n3kqg1r" path="res://assets/bosses/Life/Troll/Troll_Attack.png" id="2_ktc0g"]
 [ext_resource type="Texture2D" uid="uid://dyat4lhdx30pf" path="res://assets/bosses/Life/Troll/Troll_Idle.png" id="3_kinuf"]
 [ext_resource type="Texture2D" uid="uid://brda78f5ri2wd" path="res://assets/bosses/Life/Troll/Troll_Walk.png" id="4_hkoqm"]
@@ -582,7 +582,7 @@ animations = [{
 radius = 29.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_clmxo"]
-radius = 320.0
+radius = 909.64825
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rg3qv"]
 radius = 80.0
@@ -591,8 +591,12 @@ radius = 80.0
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_4jnuk")
+fireball_damage = 10
+energy_orb_damage = 10
+rock_storm_damage = 10
+life_drain_damage = 10
+chained_charge_damage = 10
 boss_name = "TROLL"
-max_health = 50
 speed = 70.0
 attack_damage = 3
 attack_range = 260.0
@@ -626,12 +630,10 @@ position = Vector2(2, 12)
 shape = SubResource("CircleShape2D_gm8vd")
 
 [node name="EnemyDetectionArea" type="Area2D" parent="." unique_id=628226914]
-visible = false
 collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea" unique_id=138731917]
-visible = false
 shape = SubResource("CircleShape2D_clmxo")
 
 [node name="EnemyAttackHitbox" type="Area2D" parent="." unique_id=291981619]
